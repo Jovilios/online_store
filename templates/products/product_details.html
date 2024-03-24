@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block main_content %}
 
-    
+
     <div class="single-product section">
         <div class="container">
             <div class="row">
@@ -55,7 +55,7 @@
                                 </a>
                             </div>
                             <div class="down-content">
-                                <h4>{{ product.name }}</h4>
+                                <h4>{{ related_product.name }}</h4>
                                 <h3 class="price">{{ related_product.price }}</h3>
                                 <a href="{% url "product_detail" pk=product.pk %}"><i class="fa fa-circle-info"></i></a>
                             </div>

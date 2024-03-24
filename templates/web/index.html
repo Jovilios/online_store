@@ -26,10 +26,7 @@
                                 </a>
                                 {% if user.is_authenticated %}
                                 <span class="price">{{ product.price }}</span>
-                                {% else %}
-                                <span class="price">Login</span>
                                 {% endif %}
-
                             </div>
                             <div class="down-content">
                                 <span class="category">Published on {{ product.formatted_date_published }}</span>
