@@ -1,6 +1,5 @@
 from django import forms
-
-from online_store.products.models import Product, ProductImage
+from online_store.products.models import Product
 
 
 class BaseProductForm(forms.ModelForm):

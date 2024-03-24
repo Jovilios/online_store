@@ -5,9 +5,6 @@ from django.utils import timezone
 from online_store.accounts.models import UserProfile
 
 
-# Create your models here.
-
-
 class Product(models.Model):
     CATEGORY_CHOICES = (
         ("home_garden", "Home And Garden"),

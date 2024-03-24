@@ -5,7 +5,6 @@ from django.shortcuts import redirect, render
 from django.views.generic import ListView, DetailView
 from online_store.products.forms import AddProductForm
 from online_store.products.models import Product
-from django.core.paginator import Paginator
 
 
 class ProductListView(LoginRequiredMixin, ListView):
@@ -16,7 +15,7 @@ class ProductListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        category_slug = self.request.GET.get('category')
+        category_slug = self.request.GET.get("category")
         if category_slug:
             queryset = queryset.filter(category=category_slug)
         return queryset
@@ -39,7 +38,8 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         product = self.get_object()
-        context['related_products'] = Product.objects.filter(category=product.category).exclude(pk=product.pk)[:4]
+        context["related_products"] = Product.objects.filter(category=product.category).exclude(pk=product.pk)[:4]
+        context["product_publisher"] = product.user_profile
         return context
 
 

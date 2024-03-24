@@ -56,7 +56,7 @@ class LogoutViewCustom(LogoutView):
 
 def index(request):
     user_profile = get_user_model()
-    last_products = Product.objects.all()[:12]
+    last_products = Product.objects.all()[:8]
 
     context = {
         "last_products": last_products,
