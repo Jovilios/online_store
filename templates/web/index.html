@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main_content %}
+    <div class="section trending">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="section-heading">
+                        <h2>Last Products</h2>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="main-button">
+                        <a href="{% url "product_list" %}">View All</a>
+                    </div>
+                </div>
+
+                {% for product in last_products %}
+                    <div class="col-lg-3 col-md-6 align-self-center mb-30 trending-items col-md-6 adv">
+                        <div class="item">
+                            <div class="thumb">
+                                <a href="{% url 'product_detail' product.pk %}">
+                                    <img src="{{ product.photos.first.image.url }}" class="card-img-top"
+                                         alt="{{ product.name }}"
+                                         height="230">
+                                </a>
+                                {% if user.is_authenticated %}
+                                <span class="price">{{ product.price }}</span>
+                                {% else %}
+                                <span class="price">Login</span>
+                                {% endif %}
+
+                            </div>
+                            <div class="down-content">
+                                <span class="category">Published on {{ product.formatted_date_published }}</span>
+                                {% if product.name|length > 21 %}
+                                    <h4>{{ product.name|slice:17 }}...</h4>
+                                {% else %}
+                                    <h4>{{ product.name }}</h4>
+                                {% endif %}
+                                <a href="{% url "product_detail" pk=product.pk %}"><i class="fa fa-circle-info"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {#  <div class="section most-played">#}
+    {#  </div>#}
+    {#    #}
+{% endblock %}
