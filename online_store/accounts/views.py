@@ -62,3 +62,4 @@ def profile_delete(request, pk):
     }
 
     return render(request, "accounts/profile_delete.html", context)
+

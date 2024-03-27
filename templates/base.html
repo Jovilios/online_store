@@ -53,11 +53,11 @@
                     <ul class="nav">
                         <li><a href="{% url "index" %}">Home</a></li>
                         <li><a href="{% url "product_list" %}">Our Shop</a></li>
-{#                        <li><a href="#">Product Details</a></li>#}
                         <li><a href="{% url "add_product" %}">Add Product</a></li>
+
                         {% if user.is_authenticated %}
                         
-                            
+                            <li><a href="{% url "inbox" %}">Messages</a></li>
                             
                             <li>
                                 <form id="logout-form" action="{% url 'logout' %}" method="post">

@@ -5,6 +5,7 @@ from django.shortcuts import redirect, render
 from django.views.generic import ListView, DetailView
 from online_store.products.forms import AddProductForm
 from online_store.products.models import Product
+from online_store.user_messages.forms import MessageForm
 
 
 class ProductListView(LoginRequiredMixin, ListView):
@@ -40,7 +41,31 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
         product = self.get_object()
         context["related_products"] = Product.objects.filter(category=product.category).exclude(pk=product.pk)[:4]
         context["product_publisher"] = product.user_profile
+        context["message_form"] = MessageForm(initial={'product_id': product.id})
         return context
+
+    def post(self, request, *args, **kwargs):
+        product = self.get_object()
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = request.user
+            message.recipient = product.user_profile.user
+
+            # Option that you cannot write to yourself
+
+            # if message.sender == message.recipient:
+            #     return render(request, "web/error_page.html",
+            #                   {"error_message": "You cannot write to yourself."})
+
+            message.subject = f"Regarding product: {product.name}"
+            message.save()
+            return redirect('product_detail', pk=product.pk)
+        else:
+            context = self.get_context_data()
+            context['message_form'] = form
+            return self.render_to_response(context)
+
 
 
 @login_required

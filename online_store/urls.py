@@ -24,6 +24,7 @@ urlpatterns = [
     path("", include("online_store.web.urls")),
     path("products/", include("online_store.products.urls")),
     path("accounts/", include("online_store.accounts.urls")),
+    path("messages/", include("online_store.user_messages.urls"))
 
 
 ]

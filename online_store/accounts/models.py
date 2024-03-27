@@ -55,3 +55,4 @@ class UserProfile(models.Model):
 
     def is_complete(self):
         return all([self.first_name, self.last_name, self.phone_number, self.city])
+
