@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block main_content %}
+
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 align-self-center single-product">
+            <div class="left-image">
+            <img src="{{ product.photos.first.image.url }}" alt="{{ product.name }}">
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header text-bg-primary p-3">
+                    Edit Product
+                </div>
+                <div class="card-body">
+                    <form action="{% url 'product_edit' pk=product.pk %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="mt-3 btn btn-danger">EDIT PRODUCT</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

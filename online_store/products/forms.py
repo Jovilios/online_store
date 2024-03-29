@@ -1,5 +1,5 @@
 from django import forms
-from online_store.products.models import Product
+from online_store.products.models import Product, ProductImage
 
 
 class BaseProductForm(forms.ModelForm):
@@ -34,7 +34,22 @@ class AddProductForm(BaseProductForm):
 
 
 class EditProductForm(BaseProductForm):
-    pass
+    photos = forms.ImageField(required=False, widget=forms.ClearableFileInput())
+    date_published = forms.DateTimeField(required=False,
+                                         widget=forms.DateTimeInput(attrs={'readonly': 'readonly'}))
+
+    class Meta:
+        model = Product
+        fields = ["name", "category", "description", "price", "date_published", "photos"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["name"].widget.attrs.update({"class": "form-control", "placeholder": "Product Name"})
+        self.fields["description"].widget.attrs.update({"class": "form-control", "placeholder": "Product Description"})
+        self.fields["category"].widget.attrs.update({"class": "form-control", "placeholder": "Category"})
+        self.fields["price"].widget.attrs.update({"class": "form-control", "placeholder": "Price"})
+        self.fields["date_published"].widget.attrs.update({"class": "form-control", "placeholder": "Date Published"})
+        self.fields["photos"].widget.attrs.update({"class": "form-control", "placeholder": "Select Image"})
 
 
 class DeleteProductForm(BaseProductForm):

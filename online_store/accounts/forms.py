@@ -70,16 +70,6 @@ class ProfileDeleteForm(BaseProfileForm):
         model = CustomUser
         fields = []
 
-    # def delete_user(self, commit=True):
-    #     user_profile = self.instance
-    #
-    #     if user_profile:
-    #         user_profile.products.all().delete()
-    #         user_profile.user.delete()
-    #         user_profile.delete()
-    #
-    #     return None
-
     def delete_user(self, commit=True):
         user_profile = self.instance
 
