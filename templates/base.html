@@ -97,10 +97,10 @@
                     <h6>Welcome to X shop</h6>
                     <h2>BEST SHOPPING SITE EVER!</h2>
                     <div class="search-input">
-{#                                      <form id="search" action="#">#}
-{#                                        <input type="text" placeholder="Type Something" id='searchText' name="searchKeyword" onkeypress="handle" />#}
-{#                                        <button role="button">Search Now</button>#}
-{#                                      </form>#}
+                        <form id="search" action="{% url 'product_list' %}">
+                            <input type="text" id='searchText' name="search" onkeypress="handle" placeholder="Search products" value="{{ search_query }}"/>
+                            <button role="button">Search Now</button>
+                        </form>
                     </div>
                 </div>
             </div>

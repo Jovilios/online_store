@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
@@ -19,6 +20,14 @@ class ProductListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         category_slug = self.request.GET.get("category")
+        search_query = self.request.GET.get("search")
+
+        if search_query:
+            queryset = queryset.filter(
+                Q(name__icontains=search_query) |
+                Q(description__icontains=search_query)
+            )
+
         if category_slug:
             queryset = queryset.filter(category=category_slug)
         return queryset
@@ -30,6 +39,7 @@ class ProductListView(LoginRequiredMixin, ListView):
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
         context['categories'] = Product.CATEGORY_CHOICES
+        context['search_query'] = self.request.GET.get('search', '')
         return context
 
 
