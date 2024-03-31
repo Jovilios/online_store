@@ -4,9 +4,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.views.generic import ListView, DetailView
 
-from online_store import products
-from online_store.products.forms import AddProductForm, EditProductForm
-from online_store.products.models import Product, ProductImage
+
+from online_store.products.forms import AddProductForm, EditProductForm, DeleteProductForm
+from online_store.products.models import Product
 from online_store.user_messages.forms import MessageForm
 
 
@@ -99,6 +99,7 @@ def add_product(request):
 
     return render(request, "products/product_add.html", context)
 
+
 @login_required
 def edit_product(request, pk):
     user_profile = request.user.userprofile
@@ -111,19 +112,8 @@ def edit_product(request, pk):
     if request.method == 'POST':
         form = EditProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
-            product = form.save(commit=False)
+            form.save()
 
-            new_photos = form.cleaned_data.get('photos')
-
-            if new_photos:
-                for images in product.photos.all():
-                    images.image.delete()
-
-                ProductImage.objects.filter(product=product).delete()
-                product_image = ProductImage.objects.create(product=product, image=new_photos)
-                product_image.save()
-
-            product.save()
             return redirect("product_detail", pk=product.pk)
     else:
         form = EditProductForm(instance=product)
@@ -138,4 +128,24 @@ def edit_product(request, pk):
 
 
 def delete_product(request, pk):
-    pass
+    user_profile = request.user.userprofile
+    product = Product.objects.get(pk=pk)
+
+    if user_profile.user_id != product.user_profile_id:
+        return render(request, "web/error_page.html",
+                      {"error_message": "You do not have permission to edit this product."})
+
+    if request.method == "POST":
+        form = DeleteProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect("index")
+    else:
+        form = DeleteProductForm(instance=product)
+
+    context = {
+        "form": form,
+        "product": product
+    }
+
+    return render(request, "products/product_delete.html", context)

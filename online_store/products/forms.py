@@ -51,6 +51,43 @@ class EditProductForm(BaseProductForm):
         self.fields["date_published"].widget.attrs.update({"class": "form-control", "placeholder": "Date Published"})
         self.fields["photos"].widget.attrs.update({"class": "form-control", "placeholder": "Select Image"})
 
+    def save(self, commit=True):
+        product = super().save(commit=False)
+
+        if commit:
+            product.save()
+
+            new_photos = self.cleaned_data.get('photos')
+            if new_photos:
+                for image in product.photos.all():
+                    image.image.delete()
+
+                ProductImage.objects.filter(product=product).delete()
+                product_image = ProductImage.objects.create(product=product, image=new_photos)
+                product_image.save()
+
+        return product
+
 
 class DeleteProductForm(BaseProductForm):
-    pass
+    photos = forms.ImageField(required=False, widget=forms.ClearableFileInput())
+
+    class Meta:
+        model = Product
+        fields = ["name", "description", "category", "price", "date_published"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name in self.fields:
+            self.fields[field_name].widget = forms.HiddenInput()
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+
+        if commit:
+            for image in instance.photos.all():
+                image.image.delete()
+            ProductImage.objects.filter(product=instance).delete()
+            instance.delete()
+
+        return instance

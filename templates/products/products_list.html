@@ -4,8 +4,8 @@
 
     <div class="section trending">
         <div class="container">
-            <div class="row">
-                <form id="" method="get" action="{% url 'product_list' %}">
+            <div class="row section-heading">
+                <form method="get" action="{% url 'product_list' %}">
                     {% for category_slug, category_name in categories %}
                         <button class="btn btn-outline-primary mb-2" type="submit" name="category"
                                 value="{{ category_slug }}"
