@@ -1,5 +1,4 @@
-from cProfile import Profile
-
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.utils.translation import gettext_lazy as _
 from django import forms
@@ -37,6 +36,20 @@ class CustomAuthenticationForm(AuthenticationForm):
         super().__init__(*args, **kwargs)
         self.fields["username"].widget.attrs.update({"class": "form-control", "placeholder": "Email"})
         self.fields["password"].widget.attrs.update({"class": "form-control", "placeholder": "Password"})
+
+
+class PasswordChangeCustomForm(PasswordChangeForm):
+    error_messages = {
+        "password_incorrect": _("Your old password was entered incorrectly. Please enter it again."),
+        "password_mismatch": _("The two password fields didn't match."),
+    }
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(user, *args, **kwargs)
+        self.fields["old_password"].widget.attrs.update({"class": "form-control"})
+        self.fields["new_password1"].widget.attrs.update({"class": "form-control"})
+        self.fields["new_password2"].widget.attrs.update({"class": "form-control"})
+        self.fields["new_password1"].help_text = ""
 
 
 class BaseProfileForm(forms.ModelForm):
@@ -86,11 +99,3 @@ class ProfileDeleteForm(BaseProfileForm):
             user_profile.delete()
 
         return None
-
-
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     # Set initial value for user field as the email of the associated CustomUser instance
-    #     if self.instance.user:
-    #         self.initial['user'] = self.instance.user.email

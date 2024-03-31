@@ -1,7 +1,7 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
-from online_store.accounts.forms import ProfileEditForm, ProfileDeleteForm
+from online_store.accounts.forms import ProfileEditForm, ProfileDeleteForm, PasswordChangeCustomForm
 from online_store.accounts.models import UserProfile
 
 
@@ -63,3 +63,23 @@ def profile_delete(request, pk):
 
     return render(request, "accounts/profile_delete.html", context)
 
+
+@login_required
+def change_password(request, pk):
+    user_profile = get_object_or_404(UserProfile, pk=pk)
+
+    if request.method == 'POST':
+        form = PasswordChangeCustomForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important to keep the user logged in
+            return redirect('profile_details', pk=user_profile.pk)
+    else:
+        form = PasswordChangeCustomForm(user=request.user)
+
+    context = {
+        "user_profile": user_profile,
+        "form": form
+    }
+
+    return render(request, 'accounts/profile_password_edit.html', context)

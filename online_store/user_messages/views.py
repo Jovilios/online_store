@@ -4,7 +4,6 @@ from .forms import MessageRespondForm
 from online_store.user_messages.models import Message
 
 
-
 @login_required
 def inbox(request):
     if request.method == 'POST':
@@ -49,6 +48,7 @@ def respond_to_message(request, message_id):
     }
 
     return render(request, 'messages/respond_to_message.html', context)
+
 
 @login_required
 def delete_message(request, message_id):

@@ -99,6 +99,7 @@ def add_product(request):
 
     return render(request, "products/product_add.html", context)
 
+# Decorator to check if the user is staff
 
 @login_required
 def edit_product(request, pk):
@@ -126,14 +127,14 @@ def edit_product(request, pk):
 
     return render(request, "products/product_edit.html", context)
 
-
+@login_required
 def delete_product(request, pk):
     user_profile = request.user.userprofile
     product = Product.objects.get(pk=pk)
 
     if user_profile.user_id != product.user_profile_id:
         return render(request, "web/error_page.html",
-                      {"error_message": "You do not have permission to edit this product."})
+                      {"error_message": "You do not have permission to delete this product."})
 
     if request.method == "POST":
         form = DeleteProductForm(request.POST, instance=product)
