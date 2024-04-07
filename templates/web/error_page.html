@@ -6,11 +6,16 @@
         <div class="align-self-center">
           <div class="section-heading">
             <h6>Oops! Something went wrong.</h6>
+          
               {% if not error_message %}
+                  
             <h2>We're sorry, but an error has occurred.</h2>
             <p>Please try again later or contact support.</p>
+                  
               {% else %}
+                  
               <h1>{{ error_message }}</h1>
+                  
               {% endif %}
           </div>
         </div>

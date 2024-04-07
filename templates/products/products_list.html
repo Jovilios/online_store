@@ -91,15 +91,3 @@
     </div>
 
 {% endblock %}
-
-
-<script>
-    document.querySelectorAll('#category-form button').forEach(button => {
-        button.addEventListener('click', function () {
-            document.querySelectorAll('#category-form button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            this.classList.add('active');
-        });
-    });
-</script>

@@ -35,11 +35,11 @@ class ProductListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         paginator = self.paginator_class(Product.objects.all(), self.paginate_by)
-        page_number = self.request.GET.get('page')
+        page_number = self.request.GET.get("page")
         page_obj = paginator.get_page(page_number)
-        context['page_obj'] = page_obj
-        context['categories'] = Product.CATEGORY_CHOICES
-        context['search_query'] = self.request.GET.get('search', '')
+        context["page_obj"] = page_obj
+        context["categories"] = Product.CATEGORY_CHOICES
+        context["search_query"] = self.request.GET.get("search", "")
         return context
 
 
@@ -53,7 +53,7 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
         product = self.get_object()
         context["related_products"] = Product.objects.filter(category=product.category).exclude(pk=product.pk)[:4]
         context["product_publisher"] = product.user_profile
-        context["message_form"] = MessageForm(initial={'product_id': product.id})
+        context["message_form"] = MessageForm(initial={"product_id": product.id})
         return context
 
     def post(self, request, *args, **kwargs):
@@ -72,10 +72,10 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
 
             message.subject = f"Regarding product: {product.name}"
             message.save()
-            return redirect('product_detail', pk=product.pk)
+            return redirect("product_detail", pk=product.pk)
         else:
             context = self.get_context_data()
-            context['message_form'] = form
+            context["message_form"] = form
             return self.render_to_response(context)
 
 
@@ -120,7 +120,7 @@ def edit_product(request, pk):
         return render(request, "web/error_page.html",
                       {"error_message": "You do not have permission to edit this product."})
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = EditProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             form.save()

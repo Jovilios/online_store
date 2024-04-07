@@ -57,7 +57,7 @@ class EditProductForm(BaseProductForm):
         if commit:
             product.save()
 
-            new_photos = self.cleaned_data.get('photos')
+            new_photos = self.cleaned_data.get("photos")
             if new_photos:
                 for image in product.photos.all():
                     image.image.delete()

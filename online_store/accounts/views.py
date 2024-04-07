@@ -68,12 +68,12 @@ def profile_delete(request, pk):
 def change_password(request, pk):
     user_profile = get_object_or_404(UserProfile, pk=pk)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = PasswordChangeCustomForm(user=request.user, data=request.POST)
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)  # Important to keep the user logged in
-            return redirect('profile_details', pk=user_profile.pk)
+            return redirect("profile_details", pk=user_profile.pk)
     else:
         form = PasswordChangeCustomForm(user=request.user)
 
@@ -82,4 +82,4 @@ def change_password(request, pk):
         "form": form
     }
 
-    return render(request, 'accounts/profile_password_edit.html', context)
+    return render(request, "accounts/profile_password_edit.html", context)

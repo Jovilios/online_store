@@ -7,7 +7,7 @@ from online_store.accounts.models import CustomUser, UserProfile
 
 
 class CustomUserCreationForm(UserCreationForm):
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput, validators=[validate_password_strength])
+    password1 = forms.CharField(label="Password", widget=forms.PasswordInput, validators=[validate_password_strength])
     error_messages = {
         "duplicate_email": _("A user with that email already exists."),
         "password_mismatch": _("The two password fields didn't match."),
@@ -87,14 +87,15 @@ class ProfileDeleteForm(BaseProfileForm):
         user_profile = self.instance
 
         if user_profile:
-            for product in user_profile.products.all():
-                for images in product.photos.all():
-                    if images.image:
-                        images.image.delete()
+            if user_profile.products.exists():
+                for product in user_profile.products.all():
+                    for images in product.photos.all():
+                        if images.image:
+                            images.image.delete()
 
-                product.photos.all().delete()
+                    product.photos.all().delete()
+                    product.delete()
 
-            user_profile.products.all().delete()
             user_profile.user.delete()
             user_profile.delete()
 

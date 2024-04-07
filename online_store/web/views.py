@@ -28,7 +28,7 @@ class SignUpView(generic.CreateView):
         if user is not None:
             login(self.request, user)
 
-        return redirect(reverse('index'))
+        return redirect(reverse("index"))
 
 
 class LoginViewCustom(LoginView):

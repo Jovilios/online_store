@@ -58,7 +58,6 @@
                         {% if user.is_authenticated %}
                         
                             <li><a href="{% url "inbox" %}">Messages</a></li>
-                            
                             <li>
                                 <form id="logout-form" action="{% url 'logout' %}" method="post">
                                     {% csrf_token %}
@@ -66,9 +65,10 @@
                                 </form>
                             </li>
                             
-                            
                         {% else %}
+                            
                             <li><a class="a-login" href="{% url "login" %}">Login</a></li>
+                            
                         {% endif %}
 
                         {% if user.is_authenticated %}
@@ -127,6 +127,7 @@
 <script src="{% static "js/owl-carousel.js" %}"></script>
 <script src="{% static "js/counter.js" %}"></script>
 <script src="{% static "js/custom.js" %}"></script>
+<script src="{% static "js/custom_by_me.js" %}"></script>
 
 </body>
 </html>
