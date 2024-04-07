@@ -6,6 +6,7 @@ from django.urls import reverse_lazy, reverse
 from django.views import generic
 from online_store.accounts.forms import CustomUserCreationForm, CustomAuthenticationForm
 from online_store.products.models import Product
+from .tasks import send_greeting_email
 
 
 class SignUpView(generic.CreateView):
@@ -27,6 +28,7 @@ class SignUpView(generic.CreateView):
 
         if user is not None:
             login(self.request, user)
+            send_greeting_email.delay(user.email)
 
         return redirect(reverse("index"))
 

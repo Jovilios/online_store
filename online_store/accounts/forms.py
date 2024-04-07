@@ -6,6 +6,7 @@ from .validators import validate_password_strength
 from online_store.accounts.models import CustomUser, UserProfile
 
 
+
 class CustomUserCreationForm(UserCreationForm):
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput, validators=[validate_password_strength])
     error_messages = {
