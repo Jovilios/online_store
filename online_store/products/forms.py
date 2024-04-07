@@ -21,17 +21,8 @@ class BaseProductForm(forms.ModelForm):
             {"class": "form-control", "placeholder": "Date Published", "readonly": "readonly"})
         self.fields["photos"].widget.attrs.update({"class": "form-control", "placeholder": "Select Image"})
 
-    # def save(self, commit=True):
-    #     product = super().save(commit=commit)
-    #     if commit:
-    #         for image in self.cleaned_data.get('photos', []):
-    #             ProductImage.objects.create(product=product, image=image)
-    #     return product
-
-
 class AddProductForm(BaseProductForm):
     pass
-
 
 class EditProductForm(BaseProductForm):
     photos = forms.ImageField(required=False, widget=forms.ClearableFileInput())

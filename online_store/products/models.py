@@ -2,7 +2,9 @@ from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils import timezone
 from online_store.accounts.models import UserProfile
+from online_store.products.validators import validate_image_size_less_than_5mb
 
+SIZE_5_MB = 5 * 1024 * 1024
 
 class Product(models.Model):
     CATEGORY_CHOICES = (
