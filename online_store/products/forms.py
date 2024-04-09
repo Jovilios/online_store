@@ -21,8 +21,10 @@ class BaseProductForm(forms.ModelForm):
             {"class": "form-control", "placeholder": "Date Published", "readonly": "readonly"})
         self.fields["photos"].widget.attrs.update({"class": "form-control", "placeholder": "Select Image"})
 
+
 class AddProductForm(BaseProductForm):
     pass
+
 
 class EditProductForm(BaseProductForm):
     photos = forms.ImageField(required=False, widget=forms.ClearableFileInput())
